@@ -18,7 +18,15 @@ post "/bookmarks" do
 	input = params.slice "url", "title"
 	bookmark = Bookmark.create input
 	# Created
-	[201, "/bookmarks/#{bookmark["'id"]}"]
+	[201, "/bookmarks/#{bookmark['id']}"]
+end
+
+put "/bookmarks/:id" do
+  id = params[:id]
+  bookmark = Bookmark.get(id)
+  input = params.slice "url", "title"
+  bookmark.update input
+  204 # No Content
 end
 
 class Hash
@@ -29,7 +37,14 @@ end
 
 get "/bookmarks/:id" do
 	id = params[:id]
-	bookmark = Bookmark.get[id]
+	bookmark = Bookmark.get(id)
 	content_type :json
 	bookmark.to_json
+end
+
+delete "/bookmarks/:id" do
+  id = params[:id]
+  bookmark = Bookmark.get(id)
+  bookmark.destroy
+  200 # OK
 end
